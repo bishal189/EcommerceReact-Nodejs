@@ -2,6 +2,8 @@ import React from 'react'
 import  "./App.css"
 import Home from './components/Home/Home'
 import Navbar from './components/Navbar/Navbar'
+import ProductsPage from './components/Products/ProductsPage'
+import SingleProductPage from './components/SingleProduct/SingleProductPage'
 
 const App = () => {
   return (
@@ -9,7 +11,10 @@ const App = () => {
       <Navbar/>
 
       <main>
-      <Home/>
+      {/* <Home/> */}
+
+      {/* <ProductsPage/> */}
+      <SingleProductPage/>
       </main>
       
     </div>

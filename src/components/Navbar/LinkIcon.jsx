@@ -1,10 +1,10 @@
 import React from 'react'
 import './LinkIcon.css'
 
-const LinkIcon = ({title,link,emoji}) => {
+const LinkIcon = ({title,link,emoji,sidebar}) => {
   return (
     <>
-    <a href={link} className="align_center">
+    <a href={link} className={sidebar ? "align_center sidebar_link":"align_center"}>
     {title}
     <img src={emoji} alt="" className="link_emoji" />
     </a>
