@@ -2,7 +2,8 @@ import React from "react";
 import "./CartPage.css";
 import user from "../../assets/user.webp";
 import Table from "../Common/Table";
-
+import QuantityInput from "../SingleProduct/QuantityInput";
+import remove from '../../assets/remove.png'
 const CartPage = () => {
   return (
     <section className="align_center cart_page">
@@ -21,9 +22,9 @@ const CartPage = () => {
           <tr>
             <td>IPhone 14</td>
             <td>$999</td>
-            <td>1</td>
+            <td className="table_quantity_input"><QuantityInput/></td>
             <td>$999</td>
-            <td>Remove</td>
+            <td><img src={remove} alt="" className="cart_remove" /></td>
            
           </tr>
         </tbody>
