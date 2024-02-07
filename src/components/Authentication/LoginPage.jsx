@@ -3,6 +3,15 @@ import { useState } from "react";
 // import { useRef } from 'react'
 import { useForm } from "react-hook-form";
 import "./LoginPage.css";
+import {z} from 'zod'
+import {zodResolver} from "@hookform/resolvers/zod"
+
+
+const schema = z.object({
+    email: z.string().email({ message: "Enter the correct email" }).min(3),
+    password: z.string().min(8, 'Enter correct password')
+  });
+  
 
 const LoginPage = () => {
   //   const nameRef=useRef(null)
@@ -18,18 +27,18 @@ const LoginPage = () => {
   //     console.log(user)
   //   }
 
-  const [user, setUser] = useState({
-    name: "",
-    phone: "",
-  });
+//   const [user, setUser] = useState({
+//     name: "",
+//     phone: "",
+//   });
 
   //   const handleSubmit=(e)=>{
   //     e.preventDefault();
   //     console.log(user)
   //   }
 
-  const { register, handleSubmit, formState } = useForm();
-  console.log(formState.errors);
+  const { register, handleSubmit, formState } = useForm({resolver:zodResolver(schema)});
+//   console.log(formState.errors);
   const submit = (formdata) => console.log(formdata);
 
   return (
@@ -42,34 +51,38 @@ const LoginPage = () => {
         <h2>Login Form</h2>
         <div className="form_inputs">
           <div>
-            <label htmlFor="name">Name</label>
+            <label htmlFor="email">Email</label>
             <input
-              type="text"
-                id="name"
-              placeholder="Enter Name"
+              type="email"
+                id="email"
+              placeholder="Enter your email"
               className="form_text_input"
-              {...register("name", { required: true, minLength: 3 })}
+              {...register("email")}
             />
 
-            {formState.errors.name &&
-              formState.errors.name.type === "required" && (
-                <em className="form_error">Please enter your name</em>
-              )}
-
-            {formState.errors.name &&
-              formState.errors.name.type === "minLength" && (
-                <em className="form_error">Name should be greater</em>
-              )}
+            
+            {formState.errors.email &&
+               
+                <em className="form_error">
+                    {formState.errors.email.message}
+                </em>
+            }
           </div>
           <div>
-            <label htmlFor="phonenumber">Phone Number</label>
+            <label htmlFor="password">password</label>
             <input
-              type="number"
-              id="phonenumber"
-              placeholder="Enter Your Number"
+              type="password"
+              id="password"
+              placeholder="Enter Your Password"
               className="form_text_input"
-              {...register("phone", { valueAsNumber: true })}
+              {...register("password")}
             />
+             {formState.errors.password &&
+               
+               <em className="form_error">
+                   {formState.errors.password.message}
+               </em>
+           }
           </div>
           <button type="submit" className="search_button form_submit">
             Submit
