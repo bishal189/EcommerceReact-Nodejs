@@ -1,5 +1,6 @@
 import React from 'react'
 import  "./App.css"
+import CartPage from './components/Cart/CartPage'
 import Home from './components/Home/Home'
 import Navbar from './components/Navbar/Navbar'
 import ProductsPage from './components/Products/ProductsPage'
@@ -14,7 +15,8 @@ const App = () => {
       {/* <Home/> */}
 
       {/* <ProductsPage/> */}
-      <SingleProductPage/>
+      {/* <SingleProductPage/> */}
+      <CartPage/>
       </main>
       
     </div>
