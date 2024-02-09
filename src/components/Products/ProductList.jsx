@@ -2,10 +2,12 @@ import React from "react";
 import "./ProductList.css";
 import ProductCard from "../Home/ProductCard";
 import useData from "../../hooks/useData";
+import ProductCardSkeleton from "./ProductCardSkeleton";
 
 
 const ProductList = () => {
-  const {data,error}=useData('/products')
+  const {data,error,loading}=useData('/products')
+  const skeleton=[1,2,3,4,5,6,7,8]
   // console.log(products,'**********')
   
   return (
@@ -22,7 +24,15 @@ const ProductList = () => {
       </header>
       <div className="products_list">
         {error && <em className="form_error">{error}</em>}
-        {data.products && data.products.map((product) => (
+
+        {loading &&
+          skeleton.map((n)=>(
+            <ProductCardSkeleton key={n}/>
+
+          ))
+        }
+        {
+        data.products && data.products.map((product) => (
           <ProductCard
             key={product._id}
             id={product._id}
