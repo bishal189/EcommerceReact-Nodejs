@@ -1,33 +1,22 @@
 import React from "react";
 import LinkIcon from "../Navbar/LinkIcon";
 import "./ProductsSidebar.css";
-import rocket from "../../assets/rocket.png";
-import { useState } from "react";
-import { useEffect } from "react";
-import apiClients from "../../utils/api-client";
+import useData from "../../hooks/useData";
+
+
 
 const ProductsSidebar = () => {
-  const [category, setCategory] = useState([]);
-  const [error, setError] = useState([]);
-  useEffect(() => {
-    apiClients
-      .get("/category")
-      .then((res) => {
-        setCategory(res.data);
-      })
-      .catch((err) => {
-        setError(err.message);
-      });
-  }, []);
-  console.log(category);
+
+  const {data:category,error}=useData('/category')
   return (
     <aside className="products_sidebar">
       <h2>Category</h2>
       <div className="category_links">
-        {error && <em className="form_control">{error}</em>}
-        {category.map((category) => {
+        {error && <em className="form_error">{error}</em>}
+        {category && category.map((category) => {
           return (
             <LinkIcon
+              key={category._id}
               id={category._id}
               title={category.name}
               sidebar={true}
