@@ -7,6 +7,7 @@ import memo from "../../assets/memo.png"
 import order from "../../assets/package.png"
 import lock from "../../assets/locked.png"
 import LinkIcon from "./LinkIcon";
+import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   return (
@@ -29,9 +30,9 @@ const Navbar = () => {
        <LinkIcon title='My Orders' link='/myorders' emoji={order} />
        <LinkIcon title='Logout' link='/logout' emoji={lock} />
         
-        <a href="/cart"className="align_center">
+        <NavLink to={"/cart"} className="align_center">
             Cart <p className="align_center cart_counts">0</p>
-        </a>
+        </NavLink>
       </div>
     </nav>
   );
