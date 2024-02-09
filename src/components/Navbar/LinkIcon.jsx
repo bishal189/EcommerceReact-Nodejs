@@ -7,7 +7,7 @@ const LinkIcon = ({title,link,emoji,sidebar}) => {
     <>
     <NavLink to={link} className={sidebar ? "align_center sidebar_link":"align_center"}>
     {title}
-    <img src={emoji} alt="" className="link_emoji" />
+    <img src={`http://localhost:5000/category/${emoji}`} alt="" className="link_emoji" />
     </NavLink>
     </>
     
