@@ -1,29 +1,41 @@
-import React from 'react'
-import { useEffect,useState } from 'react';
-import apiClient from '../utils/api-client';
-const useData = (endpoints,config,deps) => {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
+import React, { useEffect, useState } from "react";
+import apiClient from "../utils/api-client";
+
+const useData = (endpoint, customConfig, deps) => {
+    const [data, setData] = useState(null);
     const [error, setError] = useState("");
-    useEffect(() => {
-        apiClient
-          .get(endpoints,config)
-          .then((res) =>{
-            setData(res.data)
-            setLoading(false)
-        } )
-          .catch((err) => {
-            setError(err.message) 
-            setLoading(false)});
-      },deps? deps:[]);
-    
-    return{
-        data,
-        error,
-        loading
-      }
+    const [isLoading, setIsLoading] = useState(false);
 
-}
+    useEffect(
+        () => {
+            setIsLoading(true);
+            apiClient
+                .get(endpoint, customConfig)
+                .then((res) => {
+                    if (
+                        endpoint === "/products" &&
+                        data &&
+                        data.products &&
+                        customConfig.params.page !== 1
+                    ) {
+                        setData((prev) => ({
+                            ...prev,
+                            products: [...prev.products, ...res.data.products],
+                        }));
+                    } else {
+                        setData(res.data);
+                    }
+                    setIsLoading(false);
+                })
+                .catch((err) => {
+                    setError(err.message);
+                    setIsLoading(false);
+                });
+        },
+        deps ? deps : []
+    );
 
+    return { data, error, isLoading };
+};
 
-export default useData
+export default useData;
