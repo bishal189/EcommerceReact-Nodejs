@@ -63,7 +63,7 @@
 
 .add_cart{
     width: fit-content;
-    padding: 8px 18px;
+    padding: 8px 18px!important;
 }
 
 

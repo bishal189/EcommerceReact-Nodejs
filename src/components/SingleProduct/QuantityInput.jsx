@@ -1,15 +1,22 @@
 import React from 'react'
 import './QuantityInput.css'
 
-const QuantityInput = () => {
+const QuantityInput = ({quantity,setQuantity,stock}) => {
   return (
     <div className="align_center quantity_input">
-        <button className="quantity_input_button" disabled>
-          -
-        </button>
-        <p className="quantity_input_count">1</p>
-        <button className="quantity_input_button">
+   
+      <button className="quantity_input_button" disabled={quantity<=1} onClick={()=>setQuantity(quantity-1)}>
+      {" "}
+       -
+       {" "}
+     </button>
+    
+        
+        <p className="quantity_input_count">{quantity}</p>
+        <button className="quantity_input_button" disabled={quantity>=stock}   onClick={()=>setQuantity(quantity+1)}>
+          {" "}
           +
+          {" "}
         </button>
 
       </div>
