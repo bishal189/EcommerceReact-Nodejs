@@ -8,6 +8,9 @@ import useData from "../../hooks/useData";
 const ProductsSidebar = () => {
 
   const {data:category,error}=useData('/category')
+  
+  
+  
   return (
     <aside className="products_sidebar">
       <h2>Category</h2>
@@ -20,7 +23,7 @@ const ProductsSidebar = () => {
               id={category._id}
               title={category.name}
               sidebar={true}
-              link={`products?category=${category.name}`}
+              link={`/products?category=${category.name}`}
               emoji={category.image}
             />
           );
