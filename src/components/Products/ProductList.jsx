@@ -25,6 +25,7 @@ const ProductsList = () => {
     );
 
     useEffect(() => {
+        
         setPage(1);
     }, [category]);
 

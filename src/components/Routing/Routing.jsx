@@ -3,6 +3,7 @@
 import React from 'react'
 import {Routes,Route} from 'react-router-dom'
 import LoginPage from '../Authentication/LoginPage'
+import Logout from '../Authentication/Logout'
 import SignupPage from '../Authentication/SignUpPage'
 import CartPage from '../Cart/CartPage'
 import Home from '../Home/Home'
@@ -21,6 +22,7 @@ const Routing = () => {
       <Route path='/myorder' element={<MyorderPage/>}/>
       <Route path='/products' element={<ProductsPage/>}/>
       <Route path='/product/:id' element={<SingleProductPage/>}/>
+      <Route path='/logout' element={<Logout/>}/>
     </Routes>
   )
 }
