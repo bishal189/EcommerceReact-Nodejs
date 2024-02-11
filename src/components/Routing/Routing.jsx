@@ -12,7 +12,7 @@ import ProductsPage from '../Products/ProductsPage'
 import SingleProductPage from '../SingleProduct/SingleProductPage'
 
 
-const Routing = () => {
+const Routing = ({addToCart}) => {
   return (
     <Routes>
       <Route path='/' element={<Home/>}/>
@@ -21,7 +21,7 @@ const Routing = () => {
       <Route path='/cart' element={<CartPage/>}/>
       <Route path='/myorder' element={<MyorderPage/>}/>
       <Route path='/products' element={<ProductsPage/>}/>
-      <Route path='/product/:id' element={<SingleProductPage/>}/>
+      <Route path='/product/:id'  element={<SingleProductPage addToCart={addToCart}/>} />
       <Route path='/logout' element={<Logout/>}/>
     </Routes>
   )

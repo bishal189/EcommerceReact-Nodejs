@@ -6,7 +6,7 @@ import Loader from "../Common/Loader";
 import QuantityInput from "./QuantityInput";
 import "./SingleProductPage.css";
 
-const SingleProductPage = () => {
+const SingleProductPage = ({addToCart}) => {
   const [quantity,setQuantity]=useState(1)
   const [selectedImage, setSelectedImage] = useState(0);
   const { id } = useParams();
@@ -50,7 +50,7 @@ const SingleProductPage = () => {
             <p className="single_product_price">{product.price.toFixed(2)}</p>
             <h2 className="quantity_title">Quantity:</h2>
             <QuantityInput quantity={quantity} setQuantity={setQuantity} stock={product.stock} />
-            <button className="search_button add_cart">Add To Cart</button>
+            <button className="search_button add_cart" onClick={()=>addToCart(product,quantity)}>Add To Cart</button>
           </div>
         </>
       )}
