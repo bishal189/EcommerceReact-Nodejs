@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {signUp,Login} from "../../Services/Services";
-import { useNavigate } from "react-router-dom";
+
 
 const schema = z
   .object({
@@ -21,7 +21,7 @@ const schema = z
   });
 
 const SignupPage = () => {
-  const navigate=useNavigate()
+ 
   const [profilePic, setProfilePic] = useState(null);
   const [fromError,setFormError]=useState("")
   const { register, handleSubmit, formState } = useForm({
@@ -32,7 +32,7 @@ const SignupPage = () => {
     try{
       const res=await signUp(formData,profilePic)
       localStorage.setItem("token",res.data.token)
-      navigate("/")
+      window.location='/'
     }
     catch(err){
           if (err.response && err.response.status===400){

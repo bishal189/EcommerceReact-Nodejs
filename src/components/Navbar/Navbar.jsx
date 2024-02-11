@@ -22,13 +22,13 @@ const Navbar = ({ user }) => {
         </form>
       </div>
       <div className="align_center navbar_links">
-        <LinkIcon title="home" link="/" emoji={rocket} />
+        <LinkIcon title="Home" link="/" emoji={rocket} />
         <LinkIcon title="Products" link="/products" emoji={star} />
         
         { !user && <>
           <LinkIcon title="Login" link="/login" emoji={idButton} />
 
-        <LinkIcon title="SignUP" link="/signup" emoji={memo} />
+        <LinkIcon title="Signup" link="/signup" emoji={memo} />
         </>}
         
         {user && (
