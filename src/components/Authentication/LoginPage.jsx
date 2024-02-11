@@ -3,17 +3,19 @@ import { useState } from "react";
 // import { useRef } from 'react'
 import { useForm } from "react-hook-form";
 import "./LoginPage.css";
-import {z} from 'zod'
-import {zodResolver} from "@hookform/resolvers/zod"
-
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Login } from "../../Services/Services";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
-    email: z.string().email({ message: "Enter the correct email" }).min(3),
-    password: z.string().min(8, 'Enter correct password')
-  });
-  
+  email: z.string().email({ message: "Enter the correct email" }).min(3),
+  password: z.string().min(8, "Enter correct password"),
+});
 
 const LoginPage = () => {
+  const [fromError,setFormError]=useState("")
+  const navigate=useNavigate()
   //   const nameRef=useRef(null)
   //   const phoneRef=useRef(null)
   //   const handleSubmit=(e)=>{
@@ -27,20 +29,31 @@ const LoginPage = () => {
   //     console.log(user)
   //   }
 
-//   const [user, setUser] = useState({
-//     name: "",
-//     phone: "",
-//   });
+  //   const [user, setUser] = useState({
+  //     name: "",
+  //     phone: "",
+  //   });
 
   //   const handleSubmit=(e)=>{
   //     e.preventDefault();
   //     console.log(user)
   //   }
 
-  const { register, handleSubmit, formState } = useForm({resolver:zodResolver(schema)});
-//   console.log(formState.errors);
-  const submit = (formdata) => console.log(formdata);
-
+  const { register, handleSubmit, formState } = useForm({
+    resolver: zodResolver(schema),
+  });
+  const submit = async (formData) => {
+    try {
+     const res= await Login(formData);
+     localStorage.setItem("token",res.data.token)
+     navigate("/")
+   
+    } catch (err) {
+      if (err.response && err.response.status === 400) {
+        setFormError(err.response.data.message);
+      }
+    }
+  };
   return (
     <section className="align_center form_page">
       <form
@@ -54,19 +67,15 @@ const LoginPage = () => {
             <label htmlFor="email">Email</label>
             <input
               type="email"
-                id="email"
+              id="email"
               placeholder="Enter your email"
               className="form_text_input"
               {...register("email")}
             />
 
-            
-            {formState.errors.email &&
-               
-                <em className="form_error">
-                    {formState.errors.email.message}
-                </em>
-            }
+            {formState.errors.email && (
+              <em className="form_error">{formState.errors.email.message}</em>
+            )}
           </div>
           <div>
             <label htmlFor="password">password</label>
@@ -77,13 +86,15 @@ const LoginPage = () => {
               className="form_text_input"
               {...register("password")}
             />
-             {formState.errors.password &&
-               
-               <em className="form_error">
-                   {formState.errors.password.message}
-               </em>
-           }
+            {formState.errors.password && (
+              <em className="form_error">
+                {formState.errors.password.message}
+              </em>
+            )}
           </div>
+          {
+            fromError && <em className="form_error">{fromError}</em>
+          }
           <button type="submit" className="search_button form_submit">
             Submit
           </button>
