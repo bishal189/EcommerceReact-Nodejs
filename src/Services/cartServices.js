@@ -11,3 +11,8 @@ import apiClient from "../utils/api-client";
 export function getCartAPI(){
     return apiClient.get('/cart')
 }
+
+
+export function removeFromCartAPI(id){
+    return apiClient.patch(`/cart/remove/${id}`)
+}

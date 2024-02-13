@@ -10,9 +10,10 @@ import cartContext from "../../context/cartContext";
 const CartPage = () => {
   const [subTotal,setSubTotal] = useState(0)
   const userObj=useContext(UserContext)
-  const { cart,addToCart }=useContext(cartContext)
+  const { cart,removeFromCart}=useContext(cartContext)
  
   useEffect(() => {
+    console.log('hello cart page reload')
     let total=0;
     cart.forEach(item => {
       total+=item.product.price*item.quantity
@@ -21,7 +22,7 @@ const CartPage = () => {
     });
   
    
-  }, [])
+  })
   
   return (
     <section className="align_center cart_page">
@@ -46,7 +47,7 @@ const CartPage = () => {
               </td>
               <td>${quantity*product.price}</td>
               <td>
-                <img src={remove} alt="" className="cart_remove" />
+                <img src={remove} alt="" className="cart_remove" onClick={()=>removeFromCart(product._id)} />
               </td>
             </tr>
           ))}

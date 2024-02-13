@@ -8,7 +8,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { addToCartAPI, getCartAPI } from "./Services/cartServices";
+import { addToCartAPI, getCartAPI ,removeFromCartAPI} from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -18,7 +18,6 @@ const App = () => {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   useEffect(() => {
-    console.log("it must run");
     try {
       const jwt = localStorage.getItem("token");
       const jwtUser = jwtDecode(jwt);
@@ -31,6 +30,8 @@ const App = () => {
     } catch (err) {}
   }, []);
 
+
+  //add to cart 
   const addToCart = (product, quantity) => {
     const updatedCart = [...cart];
     const productIndex = updatedCart.findIndex(
@@ -55,6 +56,25 @@ const App = () => {
       });
   };
 
+
+
+
+//remove cart
+
+
+
+  const removeFromCart = (id) => {
+    const oldCart=[...cart]
+    const newCart=oldCart.filter((item)=>(item.product._id!==id))
+    setCart(newCart)
+    removeFromCartAPI(id).then((res)=>{
+      toast.success("Product removed successfully.")
+    }).catch(err=>{ 
+      toast.error("Product failed to remove successfully.")
+      setCart(oldCart)
+    })
+  }
+    
   const getCart = () => {
     getCartAPI()
       .then((res) => {
@@ -74,7 +94,7 @@ const App = () => {
 
   return (
     <UserContext.Provider value={user}>
-      <cartContext.Provider value={{cart,addToCart}}>
+      <cartContext.Provider value={{cart,addToCart,removeFromCart}}>
       <div className="App">
         <Navbar />
 
