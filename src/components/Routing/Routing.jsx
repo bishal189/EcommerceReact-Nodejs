@@ -18,10 +18,10 @@ const Routing = ({addToCart,cart}) => {
       <Route path='/' element={<Home/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/signup' element={<SignupPage/>}/>
-      <Route path='/cart' element={<CartPage cart={cart}/>}/>
+      <Route path='/cart' element={<CartPage />}/>
       <Route path='/myorders' element={<MyorderPage/>}/>
       <Route path='/products' element={<ProductsPage/>}/>
-      <Route path='/product/:id'  element={<SingleProductPage addToCart={addToCart}/>} />
+      <Route path='/product/:id'  element={<SingleProductPage />} />
       <Route path='/logout' element={<Logout/>}/>
     </Routes>
   )

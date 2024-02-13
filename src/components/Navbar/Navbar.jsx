@@ -10,9 +10,12 @@ import LinkIcon from "./LinkIcon";
 import { NavLink } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../../context/userContext";
+import cartContext from "../../context/cartContext";
 
-const Navbar = ({cartCount}) => {
+const Navbar = () => {
   const user=useContext(UserContext)
+  const { cart }=useContext(cartContext)
+
   return (
     <nav className="navbar align_center">
       <div className="align_center">
@@ -40,7 +43,7 @@ const Navbar = ({cartCount}) => {
             <LinkIcon title="Logout" link="/logout" emoji={lock} />
 
             <NavLink to={"/cart"} className="align_center">
-              Cart <p className="align_center cart_counts">{cartCount}</p>
+              Cart <p className="align_center cart_counts">{cart.length}</p>
             </NavLink>
           </>
         )}

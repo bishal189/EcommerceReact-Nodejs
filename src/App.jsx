@@ -1,6 +1,7 @@
 import React from "react";
 import "./App.css";
 import UserContext from "./context/userContext";
+import cartContext from "./context/cartContext";
 import Routing from "./components/Routing/Routing";
 import Navbar from "./components/Navbar/Navbar";
 import { useState } from "react";
@@ -10,6 +11,7 @@ import setAuthToken from "./utils/setAuthToken";
 import { addToCartAPI, getCartAPI } from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+
 setAuthToken(localStorage.getItem("token"));
 
 const App = () => {
@@ -72,14 +74,16 @@ const App = () => {
 
   return (
     <UserContext.Provider value={user}>
+      <cartContext.Provider value={{cart,addToCart}}>
       <div className="App">
-        <Navbar cartCount={cart.length} />
+        <Navbar />
 
         <main>
           <ToastContainer position="bottom-right" />
-          <Routing addToCart={addToCart} cart={cart} />
+          <Routing />
         </main>
       </div>
+      </cartContext.Provider>
     </UserContext.Provider>
   );
 };

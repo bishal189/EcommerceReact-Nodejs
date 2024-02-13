@@ -5,10 +5,13 @@ import QuantityInput from "../SingleProduct/QuantityInput";
 import remove from "../../assets/remove.png";
 import { useState,useEffect,useContext } from "react";
 import UserContext from "../../context/userContext";
-const CartPage = ({ cart }) => {
+import cartContext from "../../context/cartContext";
+
+const CartPage = () => {
   const [subTotal,setSubTotal] = useState(0)
   const userObj=useContext(UserContext)
-  console.log(userObj)
+  const { cart,addToCart }=useContext(cartContext)
+ 
   useEffect(() => {
     let total=0;
     cart.forEach(item => {

@@ -5,10 +5,14 @@ import useData from "../../hooks/useData";
 import Loader from "../Common/Loader";
 import QuantityInput from "./QuantityInput";
 import "./SingleProductPage.css";
+import { useContext } from "react";
+import cartContext from "../../context/cartContext";
 
-const SingleProductPage = ({addToCart}) => {
+const SingleProductPage = () => {
   const [quantity,setQuantity]=useState(1)
   const [selectedImage, setSelectedImage] = useState(0);
+  const { cart,addToCart }=useContext(cartContext)
+
   const { id } = useParams();
   const { data: product, error, isLoading } = useData(`/products/${id}`);
 
