@@ -8,7 +8,13 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import { addToCartAPI, getCartAPI ,removeFromCartAPI} from "./Services/cartServices";
+import {
+  addToCartAPI,
+  getCartAPI,
+  increaseProductAPI,
+  decreaseProductAPI,
+  removeFromCartAPI,
+} from "./Services/cartServices";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -30,8 +36,7 @@ const App = () => {
     } catch (err) {}
   }, []);
 
-
-  //add to cart 
+  //add to cart
   const addToCart = (product, quantity) => {
     const updatedCart = [...cart];
     const productIndex = updatedCart.findIndex(
@@ -56,25 +61,58 @@ const App = () => {
       });
   };
 
-
-
-
-//remove cart
-
-
+  //remove cart
 
   const removeFromCart = (id) => {
-    const oldCart=[...cart]
-    const newCart=oldCart.filter((item)=>(item.product._id!==id))
-    setCart(newCart)
-    removeFromCartAPI(id).then((res)=>{
-      toast.success("Product removed successfully.")
-    }).catch(err=>{ 
-      toast.error("Product failed to remove successfully.")
-      setCart(oldCart)
-    })
-  }
-    
+    const oldCart = [...cart];
+    const newCart = oldCart.filter((item) => item.product._id !== id);
+    setCart(newCart);
+    removeFromCartAPI(id)
+      .then((res) => {
+        toast.success("Product removed successfully.");
+      })
+      .catch((err) => {
+        toast.error("Product failed to remove successfully.");
+        setCart(oldCart);
+      });
+  };
+
+  //updatecart
+  const updateCart = (type, id) => {
+    const oldCart = [...cart];
+    const updatedCart = [...cart];
+    const productIndex = updatedCart.findIndex(
+      (item) => item.product._id === id
+    );
+    console.log('updatecart page')
+
+    if (type === "increase") {
+      updatedCart[productIndex].quantity+=1
+      setCart(updatedCart)
+      increaseProductAPI(id).then((res)=>{
+        toast.success("Item is increase")
+      }).catch((err)=>{
+        toast.error("oops! some thing went wrong.")
+        setCart(oldCart)
+
+      })
+    } 
+    else if (type === "decrease") {
+      updatedCart[productIndex].quantity-=1;
+      setCart(updatedCart)
+      decreaseProductAPI(id)
+      .catch((err)=>{
+        toast.error("oops! some thing went wrong.")
+        setCart(oldCart)
+
+      })
+      }}
+
+    //after ui update then
+
+
+ 
+  //get cart
   const getCart = () => {
     getCartAPI()
       .then((res) => {
@@ -94,15 +132,15 @@ const App = () => {
 
   return (
     <UserContext.Provider value={user}>
-      <cartContext.Provider value={{cart,addToCart,removeFromCart}}>
-      <div className="App">
-        <Navbar />
+      <cartContext.Provider value={{ cart, addToCart, removeFromCart, updateCart }}>
+        <div className="App">
+          <Navbar />
 
-        <main>
-          <ToastContainer position="bottom-right" />
-          <Routing />
-        </main>
-      </div>
+          <main>
+            <ToastContainer position="bottom-right" />
+            <Routing />
+          </main>
+        </div>
       </cartContext.Provider>
     </UserContext.Provider>
   );
