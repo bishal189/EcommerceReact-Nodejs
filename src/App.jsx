@@ -1,22 +1,22 @@
 import React from "react";
 import "./App.css";
+import UserContext from "./context/userContext";
 import Routing from "./components/Routing/Routing";
 import Navbar from "./components/Navbar/Navbar";
 import { useState } from "react";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import {addToCartAPI, getCartAPI} from "./Services/cartServices";
-import {ToastContainer,toast} from 'react-toastify'
-import'react-toastify/dist/ReactToastify.css'
-setAuthToken(localStorage.getItem('token'))
-
+import { addToCartAPI, getCartAPI } from "./Services/cartServices";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+setAuthToken(localStorage.getItem("token"));
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   useEffect(() => {
-    console.log('it must run')
+    console.log("it must run");
     try {
       const jwt = localStorage.getItem("token");
       const jwtUser = jwtDecode(jwt);
@@ -34,57 +34,53 @@ const App = () => {
     const productIndex = updatedCart.findIndex(
       (item) => item.product._id === product._id
     );
-    if (productIndex==-1){
+    if (productIndex == -1) {
       updatedCart.push({
         product: product,
-        quantity: quantity
-      })}
-      else{
-        updatedCart[productIndex].quantity += quantity
-      }
-     setCart(updatedCart)
-     addToCartAPI(product._id,quantity).then((res)=>{
-      toast.success('Product Added successfully.')
-     }).catch((error)=>{
-      toast.success('Producd failed to add successfully.')
-      setCart(cart)
-     })
-    
+        quantity: quantity,
+      });
+    } else {
+      updatedCart[productIndex].quantity += quantity;
+    }
+    setCart(updatedCart);
+    addToCartAPI(product._id, quantity)
+      .then((res) => {
+        toast.success("Product Added successfully.");
+      })
+      .catch((error) => {
+        toast.success("Producd failed to add successfully.");
+        setCart(cart);
+      });
   };
 
+  const getCart = () => {
+    getCartAPI()
+      .then((res) => {
+        console.log(res.data);
+        setCart(res.data);
+      })
+      .catch((error) => {
+        toast.error("some thing went wrong");
+      });
+  };
 
-
-
-
-  const getCart=()=>{
-       getCartAPI().then(res=>{
-        console.log(res.data)
-        setCart(res.data)
-       }).catch(error=>{
-         toast.error("some thing went wrong")
-       })
-       }
-
-  useEffect(()=>{
-    if(user){
-      getCart()
+  useEffect(() => {
+    if (user) {
+      getCart();
     }
-  },[user])     
-
-
-
-
-
+  }, [user]);
 
   return (
-    <div className="App">
-      <Navbar user={user} cartCount={cart.length} />
+    <UserContext.Provider value={user}>
+      <div className="App">
+        <Navbar cartCount={cart.length} />
 
-      <main>
-        <ToastContainer position="bottom-right"/> 
-        <Routing addToCart={addToCart} cart={cart} />
-      </main>
-    </div>
+        <main>
+          <ToastContainer position="bottom-right" />
+          <Routing addToCart={addToCart} cart={cart} />
+        </main>
+      </div>
+    </UserContext.Provider>
   );
 };
 
