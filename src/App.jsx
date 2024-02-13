@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import setAuthToken from "./utils/setAuthToken";
-import addToCartAPI from "./Services/cartServices";
+import {addToCartAPI, getCartAPI} from "./Services/cartServices";
 import {ToastContainer,toast} from 'react-toastify'
 import'react-toastify/dist/ReactToastify.css'
 setAuthToken(localStorage.getItem('token'))
@@ -51,14 +51,38 @@ const App = () => {
      })
     
   };
-console.log(cart)
+
+
+
+
+
+  const getCart=()=>{
+       getCartAPI().then(res=>{
+        console.log(res.data)
+        setCart(res.data)
+       }).catch(error=>{
+         toast.error("some thing went wrong")
+       })
+       }
+
+  useEffect(()=>{
+    if(user){
+      getCart()
+    }
+  },[user])     
+
+
+
+
+
+
   return (
     <div className="App">
       <Navbar user={user} cartCount={cart.length} />
 
       <main>
         <ToastContainer position="bottom-right"/> 
-        <Routing addToCart={addToCart} />
+        <Routing addToCart={addToCart} cart={cart} />
       </main>
     </div>
   );

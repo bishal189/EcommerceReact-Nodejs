@@ -3,8 +3,21 @@ import "./CartPage.css";
 import user from "../../assets/user.webp";
 import Table from "../Common/Table";
 import QuantityInput from "../SingleProduct/QuantityInput";
-import remove from '../../assets/remove.png'
-const CartPage = () => {
+import remove from "../../assets/remove.png";
+import { useState,useEffect } from "react";
+const CartPage = ({ cart }) => {
+  const [subTotal,setSubTotal] = useState(0)
+  useEffect(() => {
+    let total=0;
+    cart.forEach(item => {
+      total+=item.product.price*item.quantity
+      setSubTotal(total)
+      
+    });
+  
+   
+  }, [])
+  
   return (
     <section className="align_center cart_page">
       <div className="align_center user_info">
@@ -19,21 +32,26 @@ const CartPage = () => {
 
       <Table headings={["Item", "Price", "Quantity", "Total", "Remove"]}>
         <tbody>
-          <tr>
-            <td>IPhone 14</td>
-            <td>$999</td>
-            <td className="table_quantity_input"><QuantityInput/></td>
-            <td>$999</td>
-            <td><img src={remove} alt="" className="cart_remove" /></td>
-           
-          </tr>
+          {cart.map(({product,quantity}) => (
+            <tr key={product._id}>
+              <td>{product.title}</td>
+              <td>{product.price}</td>
+              <td className="table_quantity_input">
+                <QuantityInput  quantity={quantity} stock={product.stock}/>
+              </td>
+              <td>${quantity*product.price}</td>
+              <td>
+                <img src={remove} alt="" className="cart_remove" />
+              </td>
+            </tr>
+          ))}
         </tbody>
       </Table>
       <table className="cart_bill">
         <tbody>
           <tr>
             <td>Subtotal</td>
-            <td>$999</td>
+            <td>${subTotal}</td>
           </tr>
           <tr>
             <td>Shipping Charge</td>
@@ -41,7 +59,7 @@ const CartPage = () => {
           </tr>
           <tr className="cart_bill_final">
             <td>Subtotal</td>
-            <td>$1004</td>
+            <td>${subTotal+5}</td>
           </tr>
         </tbody>
       </table>
