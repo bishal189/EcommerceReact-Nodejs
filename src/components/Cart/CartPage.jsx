@@ -6,11 +6,14 @@ import remove from "../../assets/remove.png";
 import { useState, useEffect, useContext } from "react";
 import UserContext from "../../context/userContext";
 import cartContext from "../../context/cartContext";
+import apiClient from "../../utils/api-client";
+import { toast } from "react-toastify";
+import { checkOutAPI } from "../../Services/checkout";
 
 const CartPage = () => {
   const [subTotal, setSubTotal] = useState(0);
   const userObj = useContext(UserContext);
-  const { cart, removeFromCart, updateCart } = useContext(cartContext);
+  const { cart, removeFromCart, updateCart, setCart } = useContext(cartContext);
 
   useEffect(() => {
     console.log("hello cart page reload");
@@ -20,6 +23,18 @@ const CartPage = () => {
       setSubTotal(total);
     });
   });
+
+  function checkOut() {
+    const oldCart = [...cart];
+    checkOutAPI()
+      .then((res) => {
+        toast.success("Order placed successfully ");
+        setCart([]);
+      })
+      .catch((err) => {
+        setCart(oldCart);
+      });
+  }
 
   return (
     <section className="align_center cart_page">
@@ -81,7 +96,9 @@ const CartPage = () => {
         </tbody>
       </table>
 
-      <button className="search_button checkout_button">Checkout</button>
+      <button className="search_button checkout_button" onClick={checkOut}>
+        Checkout
+      </button>
     </section>
   );
 };
