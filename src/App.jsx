@@ -5,11 +5,18 @@ import Navbar from "./components/Navbar/Navbar";
 import { useState } from "react";
 import { useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+import addToCartAPI from "./Services/cartServices";
+import {ToastContainer,toast} from 'react-toastify'
+import'react-toastify/dist/ReactToastify.css'
+setAuthToken(localStorage.getItem('token'))
+
 
 const App = () => {
   const [user, setUser] = useState(null);
   const [cart, setCart] = useState([]);
   useEffect(() => {
+    console.log('it must run')
     try {
       const jwt = localStorage.getItem("token");
       const jwtUser = jwtDecode(jwt);
@@ -36,6 +43,12 @@ const App = () => {
         updatedCart[productIndex].quantity += quantity
       }
      setCart(updatedCart)
+     addToCartAPI(product._id,quantity).then((res)=>{
+      toast.success('Product Added successfully.')
+     }).catch((error)=>{
+      toast.success('Producd failed to add successfully.')
+      setCart(cart)
+     })
     
   };
 console.log(cart)
@@ -44,6 +57,7 @@ console.log(cart)
       <Navbar user={user} cartCount={cart.length} />
 
       <main>
+        <ToastContainer position="bottom-right"/> 
         <Routing addToCart={addToCart} />
       </main>
     </div>
