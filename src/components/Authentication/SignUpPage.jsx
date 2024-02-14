@@ -5,6 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {signUp,Login} from "../../Services/Services";
+import { Navigate } from "react-router-dom";
 
 
 const schema = z
@@ -42,7 +43,11 @@ const SignupPage = () => {
 
           }
   };
-  
+  if (user){
+    
+    return <Navigate to='/'/>
+   
+  }
 
   return (
     <section className="align_center form_page">

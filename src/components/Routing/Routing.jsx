@@ -21,11 +21,12 @@ const Routing = ({addToCart,cart}) => {
       <Route element={<ProtectedRoutes/>}>
         <Route path='/cart' element={<CartPage />}/>
         <Route path='/myorders' element={<MyorderPage/>}/>
-      </Route>
+        <Route path='/logout' element={<Logout/>}/>
+       </Route>
    
       <Route path='/products' element={<ProductsPage/>}/>
       <Route path='/product/:id'  element={<SingleProductPage />} />
-      <Route path='/logout' element={<Logout/>}/>
+     
     </Routes>
   )
 }

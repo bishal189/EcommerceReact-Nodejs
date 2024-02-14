@@ -6,7 +6,10 @@ import "./LoginPage.css";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Login } from "../../Services/Services";
-
+import { Navigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from 'react-router-dom'
+import UserContext from "../../context/userContext";
+import { useContext } from "react";
 
 const schema = z.object({
   email: z.string().email({ message: "Enter the correct email" }).min(3),
@@ -15,7 +18,12 @@ const schema = z.object({
 
 const LoginPage = () => {
   const [fromError,setFormError]=useState("")
- 
+  const location=useLocation()
+  const user=useContext(UserContext)
+  
+  
+
+
   //   const nameRef=useRef(null)
   //   const phoneRef=useRef(null)
   //   const handleSubmit=(e)=>{
@@ -43,17 +51,28 @@ const LoginPage = () => {
     resolver: zodResolver(schema),
   });
   const submit = async (formData) => {
+   
     try {
      const res= await Login(formData);
      localStorage.setItem("token",res.data.token)
-     window.location='/'
-   
+     const {state}=location
+     window.location=state?state.from:"/"
+    
+     
+     
     } catch (err) {
+      
       if (err.response && err.response.status === 400) {
         setFormError(err.response.data.message);
       }
     }
   };
+
+  if (user){
+    
+    return <Navigate to='/'/>
+   
+  }
   return (
     <section className="align_center form_page">
       <form
