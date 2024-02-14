@@ -6,6 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {signUp,Login} from "../../Services/Services";
 import { Navigate } from "react-router-dom";
+import UserContext from "../../context/userContext";
+import { useContext } from "react";
 
 
 const schema = z
@@ -25,6 +27,7 @@ const SignupPage = () => {
  
   const [profilePic, setProfilePic] = useState(null);
   const [fromError,setFormError]=useState("")
+  const user=useContext(UserContext)
   const { register, handleSubmit, formState } = useForm({
     resolver: zodResolver(schema),
   });

@@ -22,7 +22,7 @@ const Routing = ({addToCart,cart}) => {
         <Route path='/cart' element={<CartPage />}/>
         <Route path='/myorders' element={<MyorderPage/>}/>
         <Route path='/logout' element={<Logout/>}/>
-       </Route>
+      </Route>
    
       <Route path='/products' element={<ProductsPage/>}/>
       <Route path='/product/:id'  element={<SingleProductPage />} />
