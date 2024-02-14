@@ -11,33 +11,51 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import UserContext from "../../context/userContext";
 import cartContext from "../../context/cartContext";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { getSuggestionsAPI } from "../../Services/productServices";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const user = useContext(UserContext);
+  const [suggestions, setSuggestion] = useState([]);
   const [search, setSearch] = useState("");
 
   const { cart } = useContext(cartContext);
-  const navigate=useNavigate()
+  const navigate = useNavigate();
 
   //handling submit
 
-  const handleSubmit=(e)=>{
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(search.trim()!==""){
-      navigate(`/products?search=${search.trim()}`)
+    if (search.trim() !== "") {
+      navigate(`/products?search=${search.trim()}`);
     }
-   
-    
-  }
+    setSuggestion([]);
+  };
 
-  
+  useEffect(() => {
+    if (search.trim() !== "") {
+      getSuggestionsAPI(search)
+        .then((res) => {
+          setSuggestion(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      setSuggestion([]);
+    }
+  }, [search]);
 
   return (
     <nav className="navbar align_center">
       <div className="align_center">
         <h1 className="navbar_heading">CartWish</h1>
-        <form className="align_center  navbar_form" action="" onSubmit={handleSubmit}>
+        <form
+          className="align_center  navbar_form"
+          action=""
+          onSubmit={handleSubmit}
+        >
           <input
             type="text"
             className="navbar_search"
@@ -48,6 +66,23 @@ const Navbar = () => {
           <button type="submit" className="search_button">
             Search
           </button>
+          {suggestions.length > 0 && (
+            <ul className="search_result">
+              {suggestions.map((suggestion) => (
+                <li className="search_suggestion_link" key={suggestion._id}>
+                  <Link
+                    to={`/products?search=${suggestion.title}`}
+                    onClick={() => {
+                      setSearch("");
+                      setSuggestion([]);
+                    }}
+                  >
+                    {suggestion.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
         </form>
       </div>
       <div className="align_center navbar_links">
