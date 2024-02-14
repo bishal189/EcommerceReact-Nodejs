@@ -6,7 +6,7 @@ import ProductCardSkeleton from "../Products/ProductCardSkeleton";
 
 const FeaturedProduct = () => {
   const { data, error, isLoading } = useData("/products/featured");
-  console.log(data)
+  
   const skeletons=[1,2,3]
   return (
     <section className="featured_products">

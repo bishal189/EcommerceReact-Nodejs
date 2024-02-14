@@ -5,6 +5,7 @@ import basket from "../../assets/basket.png"
 import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
 import cartContext from '../../context/cartContext'
+import config from '../../config.json'
 import UserContext from '../../context/userContext'
 const ProductCard = ({product}) => {
     const {addToCart} = useContext(cartContext);
@@ -13,7 +14,7 @@ const ProductCard = ({product}) => {
     return (
   <article className='product_card'>
     <div className="product_image">
-    <NavLink to={`/product/${product?._id}`}> <img src={`http://localhost:5000/products/${product?.images[0]}`} alt="" /></NavLink>
+    <NavLink to={`/product/${product?._id}`}> <img src={`${config.baseURL}/products/${product?.images[0]}`} alt="" /></NavLink>
     </div>
 
     <div className="product_details">
